@@ -191,37 +191,18 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Make a Payment</h2>
                 <p class="text-gray-600 mb-8 max-w-xl mx-auto">Already had your bins cleaned? Select your service below to pay your invoice securely.</p>
                 
-                <div id="payment-options-container">
-                    <div class="max-w-xs mx-auto mb-8">
-                        <label for="payment-bin-count" class="block text-sm font-medium text-gray-700">Number of Bins Cleaned</label>
-                        <select id="payment-bin-count" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3+">3+</option>
-                        </select>
-                    </div>
-
-                    <div id="payment-plans-container" class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                        <!-- Payment plan cards will be dynamically inserted here -->
-                    </div>
+                <div class="max-w-xs mx-auto mb-8">
+                    <label for="payment-bin-count" class="block text-sm font-medium text-gray-700">Number of Bins Cleaned</label>
+                    <select id="payment-bin-count" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3+">3+</option>
+                    </select>
                 </div>
 
-                <!-- Stripe Payment Element Form (Initially Hidden) -->
-                <div id="payment-element-container" class="hidden max-w-xl mx-auto text-left">
-                     <h3 id="payment-summary" class="text-xl font-bold text-gray-800 mb-6 text-center"></h3>
-                     <form id="payment-form">
-                        <div id="payment-element" class="mb-6">
-                            <!-- Stripe.js injects the Payment Element here -->
-                        </div>
-                        <button id="submit-payment-button" class="w-full bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition disabled:bg-gray-400">
-                            <span id="button-text">Submit Payment</span>
-                            <span id="spinner" class="hidden">Processing...</span>
-                        </button>
-                        <div id="payment-message" class="hidden text-center text-red-500 mt-4"></div>
-                     </form>
-                     <button id="back-to-plans-button" class="mt-4 text-gray-600 hover:text-blue-600 transition w-full text-center">&larr; Choose a different plan</button>
+                <div id="payment-plans-container" class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <!-- Payment plan cards will be dynamically inserted here -->
                 </div>
-
             </div>
         </section>
 
@@ -288,7 +269,6 @@
         let currentDate = new Date();
         let selectedDate = null;
         let availabilityData = {};
-        let stripe, elements;
 
         const monthYearEl = document.getElementById('month-year');
         const calendarGridEl = document.getElementById('calendar-grid');
@@ -305,10 +285,6 @@
         
         const paymentBinCountEl = document.getElementById('payment-bin-count');
         const paymentPlansContainer = document.getElementById('payment-plans-container');
-        const paymentOptionsContainer = document.getElementById('payment-options-container');
-        const paymentElementContainer = document.getElementById('payment-element-container');
-        const paymentSummaryEl = document.getElementById('payment-summary');
-        const backToPlansButton = document.getElementById('back-to-plans-button');
         
         const messageModal = document.getElementById('message-modal');
         const modalMessage = document.getElementById('modal-message');
@@ -440,105 +416,41 @@
                 const price = plan.prices[binCount];
                 const card = document.createElement('div');
                 card.className = 'plan-card bg-white p-8 rounded-xl shadow-lg text-center';
-                card.innerHTML = `<h3 class="text-xl font-bold mb-2">${plan.name}</h3><p class="text-4xl font-bold text-blue-600 mb-4">${price}</p><button data-price-id="${priceId}" data-mode="${plan.mode}" data-plan-name="${plan.name} (${price})" class="pay-button w-full bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">Pay Now</button>`;
+                card.innerHTML = `<h3 class="text-xl font-bold mb-2">${plan.name}</h3><p class="text-4xl font-bold text-blue-600 mb-4">${price}</p><button data-price-id="${priceId}" data-mode="${plan.mode}" class="pay-button w-full bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">Pay Now</button>`;
                 paymentPlansContainer.appendChild(card);
             });
             document.querySelectorAll('.pay-button').forEach(button => {
-                button.addEventListener('click', initializePaymentElement);
+                button.addEventListener('click', handleStripeRedirect);
             });
         }
 
-        async function initializePaymentElement(event) {
+        async function handleStripeRedirect(event) {
             const button = event.currentTarget;
+            button.disabled = true;
+            button.textContent = 'Redirecting...';
+
             const priceId = button.dataset.priceId;
             const mode = button.dataset.mode;
-            const planName = button.dataset.planName;
-
+            
             if (!priceId || priceId.includes('...')) {
                 showModal('This payment plan is not configured yet. Please contact support.');
+                button.disabled = false;
+                button.textContent = 'Pay Now';
                 return;
             }
 
-            paymentOptionsContainer.classList.add('hidden');
-            paymentElementContainer.classList.remove('hidden');
-            paymentSummaryEl.textContent = `Payment for: ${planName}`;
-
-            // IMPORTANT: Replace '/create-payment-intent' with the actual URL of your deployed backend server.
-            const response = await fetch('/create-payment-intent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ priceId: priceId, mode: mode }),
-            }).catch(err => {
-                showModal('Could not connect to the payment server. Please try again later.');
-                backToPlans();
-                console.error("Fetch error:", err);
-                return null;
+            const stripe = Stripe('pk_test_51Rqg3TKvA5j46jfHjakLlMXd4P4PoSX5WYDnKDjIBCzEEZ6JquKqcnW0ks6OVv9Oh0MUFN1lHkjFsgRi3Ad1VBDo00WtjgkKfT'); // Your publishable key
+            const { error } = await stripe.redirectToCheckout({
+                lineItems: [{ price: priceId, quantity: 1 }],
+                mode: mode,
+                successUrl: `${window.location.origin}${window.location.pathname}?payment=success`,
+                cancelUrl: `${window.location.origin}${window.location.pathname}?payment=cancelled`,
             });
-            
-            if (!response || !response.ok) {
-                showModal('Could not initialize payment. Please try again.');
-                backToPlans();
-                return;
+            if (error) {
+                showModal(error.message);
+                button.disabled = false;
+                button.textContent = 'Pay Now';
             }
-
-            const { clientSecret } = await response.json();
-
-            stripe = Stripe('pk_test_51PeyVjRsn5Tj4lG8n9h5b7e93051J2W2rD9cW3e4d5F6g7H8i9J0k1L2m3N4o5P6q7R8s9T'); // Replace with your publishable key
-
-            const appearance = { theme: 'stripe' };
-            elements = stripe.elements({ appearance, clientSecret });
-
-            const paymentElement = elements.create("payment", {layout: "accordion"});
-            paymentElement.mount("#payment-element");
-
-            document.getElementById('payment-form').addEventListener('submit', handlePaymentSubmit);
-        }
-
-        async function handlePaymentSubmit(event) {
-            event.preventDefault();
-            setLoading(true);
-
-            const { error } = await stripe.confirmPayment({
-                elements,
-                confirmParams: {
-                    return_url: `${window.location.origin}?payment=success`,
-                },
-            });
-
-            if (error.type === "card_error" || error.type === "validation_error") {
-                showMessage(error.message);
-            } else {
-                showMessage("An unexpected error occurred.");
-            }
-            setLoading(false);
-        }
-
-        function backToPlans() {
-            paymentElementContainer.classList.add('hidden');
-            paymentOptionsContainer.classList.remove('hidden');
-        }
-
-        // --- Payment UI Helpers ---
-        function setLoading(isLoading) {
-            const submitBtn = document.getElementById('submit-payment-button');
-            if (isLoading) {
-                submitBtn.disabled = true;
-                document.getElementById('spinner').classList.remove('hidden');
-                document.getElementById('button-text').classList.add('hidden');
-            } else {
-                submitBtn.disabled = false;
-                document.getElementById('spinner').classList.add('hidden');
-                document.getElementById('button-text').classList.remove('hidden');
-            }
-        }
-        function showMessage(messageText) {
-            const messageContainer = document.querySelector("#payment-message");
-            messageContainer.classList.remove("hidden");
-            messageContainer.textContent = messageText;
-            setTimeout(function () {
-                messageContainer.classList.add("hidden");
-                messageContainer.textContent = "";
-            }, 4000);
         }
 
         // --- Utility & Firebase Listener Functions ---
@@ -583,7 +495,6 @@
         nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
         bookNowBtn.addEventListener('click', handleBooking);
         paymentBinCountEl.addEventListener('change', renderPaymentPlans);
-        backToPlansButton.addEventListener('click', backToPlans);
         modalCloseButton.addEventListener('click', hideModal);
 
         // --- Initial Load ---
