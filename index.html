@@ -71,7 +71,7 @@
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-600">Fresh Bins</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-2xl font-bold text-blue-600">Fresh Bins</a>
             <div class="hidden md:flex space-x-6">
                 <a href="#services" class="text-gray-600 hover:text-blue-600 transition">Services</a>
                 <a href="#schedule" class="text-gray-600 hover:text-blue-600 transition">Schedule</a>
@@ -96,7 +96,7 @@
         <section class="bg-white">
             <div class="container mx-auto px-6 py-20 text-center">
                 <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Say Goodbye to Stinky Bins</h1>
-                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We provide fast, reliable, and eco-friendly power washing for your residential trash and recycling bins.</p>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We clean yo bins then lick yo ass. Better buckle up cuz we ain't goin' easy.</p>
                 <a href="#schedule" class="mt-8 inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">Schedule Your Cleaning</a>
             </div>
         </section>
@@ -226,11 +226,11 @@
         <div class="container mx-auto px-6 py-10">
             <div class="text-center">
                 <a href="#" class="text-2xl font-bold text-white">Fresh Bins</a>
-                <p class="mt-4">Clean Bins, Happy Life.</p>
+                <p class="mt-4">Clean Bins, Clean Ass.</p>
                 <div class="mt-6 flex justify-center space-x-6">
-                    <a href="#" class="hover:text-blue-400">Facebook</a>
-                    <a href="#" class="hover:text-blue-400">Twitter</a>
-                    <a href="#" class="hover:text-blue-400">Instagram</a>
+                    <a href="https://www.youtube.com/watch?v=nVB0hNn0W28" class="hover:text-blue-400">Facebook</a>
+                    <a href="https://www.youtube.com/watch?v=nVB0hNn0W28" class="hover:text-blue-400">Twitter</a>
+                    <a href="https://www.youtube.com/watch?v=nVB0hNn0W28" class="hover:text-blue-400">Instagram</a>
                 </div>
             </div>
             <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
@@ -481,9 +481,11 @@
                  const today = new Date(); today.setHours(0,0,0,0); const dayDate = new Date(dateStr + 'T00:00:00');
                  if (dayDate >= today && dayDate.getDay() !== 0) { slotsEl.textContent = availableSlots > 0 ? `${availableSlots} left` : 'Full'; } else { slotsEl.textContent = ''; }
             }
-            dayEl.classList.remove('full'); 
+            // This is the corrected logic
             if ((total_slots > 0 && availableSlots <= 0) || (total_slots === 0 && new Date(dateStr+'T00:00:00') >= today)) { 
                 dayEl.classList.add('full'); 
+            } else {
+                dayEl.classList.remove('full');
             }
         }
         function showModal(message) { modalMessage.textContent = message; messageModal.classList.remove('hidden'); }
