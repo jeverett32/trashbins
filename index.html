@@ -1,4 +1,3 @@
-<!-- Trash bins website -->
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -17,10 +16,6 @@
     <!-- Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
 
-    <!-- Calendly Widget -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -35,6 +30,40 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* Custom styles for the calendar */
+        .calendar-day {
+            transition: all 0.2s ease-in-out;
+        }
+        .calendar-day:not(.disabled):not(.full):hover {
+            background-color: #dbeafe; /* blue-100 */
+            transform: scale(1.05);
+        }
+        .calendar-day.selected {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            font-weight: bold;
+        }
+        .calendar-day.disabled {
+            background-color: #f3f4f6; /* gray-100 */
+            color: #d1d5db; /* gray-300 */
+            cursor: not-allowed;
+        }
+        .calendar-day.full {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #9ca3af; /* gray-400 */
+            cursor: not-allowed;
+        }
+        .slots-available {
+            font-size: 0.7rem;
+            line-height: 1;
+        }
+        .plan-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -46,7 +75,7 @@
             <div class="hidden md:flex space-x-6">
                 <a href="#services" class="text-gray-600 hover:text-blue-600 transition">Services</a>
                 <a href="#schedule" class="text-gray-600 hover:text-blue-600 transition">Schedule</a>
-                <a href="#payment" class="text-gray-600 hover:text-blue-600 transition">Pay Now</a>
+                <a href="#payment" class="text-gray-600 hover:text-blue-600 transition">Make a Payment</a>
             </div>
             <a href="#schedule" class="hidden md:block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Book Now</a>
             <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
@@ -57,7 +86,7 @@
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
             <a href="#services" class="block py-2 text-gray-600 hover:text-blue-600">Services</a>
             <a href="#schedule" class="block py-2 text-gray-600 hover:text-blue-600">Schedule</a>
-            <a href="#payment" class="block py-2 text-gray-600 hover:text-blue-600">Pay Now</a>
+            <a href="#payment" class="block py-2 text-gray-600 hover:text-blue-600">Make a Payment</a>
             <a href="#schedule" class="block mt-2 bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition">Book Now</a>
         </div>
     </header>
@@ -77,28 +106,19 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Service Card 1 -->
                     <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                        </div>
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg></div>
                         <h3 class="text-xl font-bold mb-2">One-Time Clean</h3>
                         <p class="text-gray-600">Perfect for a deep clean anytime you need it. We'll leave your bins spotless and sanitized.</p>
                     </div>
-                    <!-- Service Card 2 -->
                     <div class="bg-white p-8 rounded-xl shadow-lg text-center border-4 border-blue-600 relative">
                         <span class="absolute top-0 -mt-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
-                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
-                           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
                         <h3 class="text-xl font-bold mb-2">Monthly Service</h3>
                         <p class="text-gray-600">Keep your bins consistently fresh. We'll automatically clean them every month after trash day.</p>
                     </div>
-                    <!-- Service Card 3 -->
                     <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        </div>
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
                         <h3 class="text-xl font-bold mb-2">Quarterly Plan</h3>
                         <p class="text-gray-600">A great value for seasonal cleaning. We'll visit four times a year to keep things in check.</p>
                     </div>
@@ -109,38 +129,99 @@
         <!-- Scheduling Section -->
         <section id="schedule" class="bg-white py-20 fade-in-section">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Book Your Service</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-xl mx-auto">Select a date and time that works for you. We'll confirm your appointment via email.</p>
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Schedule Your Service</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-xl mx-auto">Select an available day and provide your details. No payment required to book.</p>
                 
-                <!-- Calendly Inline Widget -->
-                <!-- 
-                    IMPORTANT: Replace the data-url below with your actual Calendly event link.
-                    You can get this from your Calendly account:
-                    1. Go to your Event Types.
-                    2. Click "Share" on the event you want to embed.
-                    3. Go to "Add to Website" -> "Inline Embed" and copy the URL from the generated code.
-                -->
-                <div class="calendly-inline-widget" data-url="https://calendly.com/d/cnp-zsc-d2g/one-off-meeting" style="min-width:320px;height:700px;"></div>
-                
+                <div class="max-w-6xl mx-auto lg:flex lg:space-x-8">
+                    <!-- Calendar -->
+                    <div class="lg:w-1/2 bg-white p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between mb-4">
+                            <button id="prev-month" class="p-2 rounded-full hover:bg-gray-100">&lt;</button>
+                            <h3 id="month-year" class="text-xl font-bold"></h3>
+                            <button id="next-month" class="p-2 rounded-full hover:bg-gray-100">&gt;</button>
+                        </div>
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center">
+                            <div class="font-semibold text-xs text-gray-500">SUN</div><div class="font-semibold text-xs text-gray-500">MON</div><div class="font-semibold text-xs text-gray-500">TUE</div><div class="font-semibold text-xs text-gray-500">WED</div><div class="font-semibold text-xs text-gray-500">THU</div><div class="font-semibold text-xs text-gray-500">FRI</div><div class="font-semibold text-xs text-gray-500">SAT</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Booking Form -->
+                    <div class="lg:w-1/2 mt-8 lg:mt-0 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Your Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                                <input type="text" id="address" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                             <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                             <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <input type="tel" id="phone" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="bin-count" class="block text-sm font-medium text-gray-700">Number of Bins</label>
+                                <select id="bin-count" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3+">3+</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="notes" class="block text-sm font-medium text-gray-700">Notes (optional)</label>
+                                <textarea id="notes" rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Come after 2:00 pm. Bins will be on the right side of the driveway."></textarea>
+                            </div>
+                            <div id="selection-display" class="p-4 bg-gray-100 rounded-lg text-gray-600 text-center">
+                                Please select a day from the calendar.
+                            </div>
+                            <button id="book-now-button" class="w-full mt-4 bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Payment Section -->
-        <section id="payment" class="py-20 fade-in-section">
+        <section id="payment" class="py-20 bg-blue-50 fade-in-section">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pay for Your Service</h2>
-                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Once your service is complete, you can pay securely online using our Stripe-powered payment system.</p>
-                <div class="max-w-sm mx-auto bg-white p-8 rounded-xl shadow-lg">
-                    <h3 class="text-xl font-bold mb-2">One-Time Cleaning</h3>
-                    <p class="text-4xl font-bold text-blue-600 mb-4">$49</p>
-                    <p class="text-gray-500 mb-6">Secure payment for a single bin cleaning service. Thank you for your business!</p>
-                    <button id="checkout-button" class="w-full bg-green-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-transform transform hover:scale-105">Pay Now</button>
-                    <div id="error-message" class="text-red-500 mt-4"></div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Make a Payment</h2>
+                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Already had your bins cleaned? Select your service below to pay your invoice securely.</p>
+                
+                <div class="max-w-xs mx-auto mb-8">
+                    <label for="payment-bin-count" class="block text-sm font-medium text-gray-700">Number of Bins Cleaned</label>
+                    <select id="payment-bin-count" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3+">3+</option>
+                    </select>
+                </div>
+
+                <div id="payment-plans-container" class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <!-- Payment plan cards will be dynamically inserted here -->
                 </div>
             </div>
         </section>
 
     </main>
+
+    <!-- Formspree hidden form -->
+    <form id="formspree-form" action=https://formspree.io/f/xjkooywl" method="POST" class="hidden">
+        <input type="email" name="email" id="formspree-email">
+        <input type="text" name="address" id="formspree-address">
+        <input type="tel" name="phone" id="formspree-phone">
+        <input type="text" name="binCount" id="formspree-binCount">
+        <input type="text" name="selectedDate" id="formspree-selectedDate">
+        <textarea name="notes" id="formspree-notes"></textarea>
+        <!-- This hidden field ensures replies go to the customer's email -->
+        <input type="hidden" name="_replyto" id="formspree-replyto">
+        <!-- This hidden field is for the company's notification email -->
+        <input type="hidden" name="_cc" value="john.everett32@gmail.com">
+    </form>
+
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
@@ -149,7 +230,6 @@
                 <a href="#" class="text-2xl font-bold text-white">Fresh Bins</a>
                 <p class="mt-4">Clean Bins, Happy Life.</p>
                 <div class="mt-6 flex justify-center space-x-6">
-                    <!-- Replace with your actual social media links -->
                     <a href="#" class="hover:text-blue-400">Facebook</a>
                     <a href="#" class="hover:text-blue-400">Twitter</a>
                     <a href="#" class="hover:text-blue-400">Instagram</a>
@@ -161,54 +241,293 @@
         </div>
     </footer>
 
+    <!-- Modal for messages -->
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <p id="modal-message" class="text-lg mb-6"></p>
+            <button id="modal-close-button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Close</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // IMPORTANT: Replace with your Firebase project's configuration.
+        const firebaseConfig = {
+          apiKey: "AIzaSyBsHCie58L2nYYKtts6In5DS2F1a3_aDPM",
+          authDomain: "trash-bins.firebaseapp.com",
+          projectId: "trash-bins",
+          storageBucket: "trash-bins.firebasestorage.app",
+          messagingSenderId: "981537041970",
+          appId: "1:981537041970:web:83f0fda02b87e294be562b",
+          measurementId: "G-ZWX9BNHB6Y"
+        };
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, runTransaction, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- App State & Elements ---
+        let currentDate = new Date();
+        let selectedDate = null;
+        let availabilityData = {};
+
+        const monthYearEl = document.getElementById('month-year');
+        const calendarGridEl = document.getElementById('calendar-grid');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        
+        const addressEl = document.getElementById('address');
+        const emailEl = document.getElementById('email');
+        const phoneEl = document.getElementById('phone');
+        const binCountEl = document.getElementById('bin-count');
+        const notesEl = document.getElementById('notes');
+        const selectionDisplayEl = document.getElementById('selection-display');
+        const bookNowBtn = document.getElementById('book-now-button');
+        
+        const paymentBinCountEl = document.getElementById('payment-bin-count');
+        const paymentPlansContainer = document.getElementById('payment-plans-container');
+        
+        const messageModal = document.getElementById('message-modal');
+        const modalMessage = document.getElementById('modal-message');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        // --- Business Logic ---
+        const weeklyAvailability = { 0: 0, 1: 10, 2: 10, 3: 10, 4: 5, 5: 5, 6: 0 };
+
+        // IMPORTANT: Create these Price IDs in your Stripe Dashboard.
+        const paymentPricing = {
+            onetime: { '1': 'price_1PfABC...', '2': 'price_1PfDEF...', '3+': 'price_1PfGHI...' },
+            monthly: { '1': 'price_1PfJKL...', '2': 'price_1PfMNO...', '3+': 'price_1PfPQR...' },
+            quarterly: { '1': 'price_1PfSTU...', '2': 'price_1PfVWX...', '3+': 'price_1PfZAB...' }
+        };
+        const planDetails = {
+            onetime: { name: 'One-Time', prices: { '1': '$29', '2': '$39', '3+': '$49' }, mode: 'payment' },
+            monthly: { name: 'Monthly', prices: { '1': '$25/mo', '2': '$35/mo', '3+': '$45/mo' }, mode: 'subscription' },
+            quarterly: { name: 'Quarterly', prices: { '1': '$27/qtr', '2': '$37/qtr', '3+': '$47/qtr' }, mode: 'subscription' }
+        };
+
+        // --- Main Functions ---
+        function renderCalendar() {
+            calendarGridEl.innerHTML = `<div class="font-semibold text-xs text-gray-500">SUN</div><div class="font-semibold text-xs text-gray-500">MON</div><div class="font-semibold text-xs text-gray-500">TUE</div><div class="font-semibold text-xs text-gray-500">WED</div><div class="font-semibold text-xs text-gray-500">THU</div><div class="font-semibold text-xs text-gray-500">FRI</div><div class="font-semibold text-xs text-gray-500">SAT</div>`;
+            const year = currentDate.getFullYear(); const month = currentDate.getMonth();
+            monthYearEl.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+            const firstDayOfMonth = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            for (let i = 0; i < firstDayOfMonth; i++) { calendarGridEl.insertAdjacentHTML('beforeend', '<div></div>'); }
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(year, month, day); const dateStr = dayDate.toISOString().split('T')[0];
+                const dayEl = document.createElement('div'); const dayOfWeek = dayDate.getDay();
+                const totalSlotsForDay = weeklyAvailability[dayOfWeek]; const { booked_slots = 0 } = availabilityData[dateStr] || {};
+                const availableSlots = totalSlotsForDay - booked_slots;
+                let slotsText = '';
+                if (dayDate >= today && dayOfWeek !== 0) { slotsText = availableSlots > 0 ? `${availableSlots} left` : 'Full'; }
+                dayEl.innerHTML = `<div class="font-semibold">${day}</div><div class="slots-available">${slotsText}</div>`;
+                dayEl.dataset.date = dateStr; dayEl.className = 'calendar-day p-2 rounded-lg cursor-pointer flex flex-col items-center justify-center h-16';
+                if (dayDate < today || dayOfWeek === 0) { dayEl.classList.add('disabled'); }
+                else if (totalSlotsForDay === 0 || availableSlots <= 0) { dayEl.classList.add('full'); }
+                else { dayEl.addEventListener('click', () => handleDateClick(dayDate, dayEl)); }
+                if (selectedDate && dateStr === selectedDate.toISOString().split('T')[0]) { dayEl.classList.add('selected'); }
+                calendarGridEl.appendChild(dayEl);
+            }
+            listenForAvailability();
+        }
+
+        function handleDateClick(date, element) {
+            document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
+            selectedDate = date; element.classList.add('selected');
+            selectionDisplayEl.textContent = `Selected: ${date.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' })}`;
+            validateBookingForm();
+        }
+
+        function validateBookingForm() {
+            const isValid = addressEl.value.trim() !== '' && emailEl.value.trim() !== '' && phoneEl.value.trim() !== '' && binCountEl.value && selectedDate !== null;
+            bookNowBtn.disabled = !isValid;
+            return isValid;
+        }
+        
+        async function handleBooking() {
+            if (!validateBookingForm()) {
+                showModal("Please fill out all fields and select a date.");
+                return;
+            }
+            bookNowBtn.disabled = true;
+            bookNowBtn.textContent = 'Booking...';
+
+            const bookingData = {
+                address: addressEl.value, email: emailEl.value, phone: phoneEl.value,
+                binCount: binCountEl.value, notes: notesEl.value,
+                selectedDate: selectedDate.toISOString().split('T')[0],
+                status: 'booked', createdAt: new Date()
+            };
+
+            try {
+                // Decrement availability
+                const dayRef = doc(db, "availability", bookingData.selectedDate);
+                await runTransaction(db, async (transaction) => {
+                    const dayDoc = await transaction.get(dayRef);
+                    if (!dayDoc.exists()) throw "Date not available.";
+                    const data = dayDoc.data();
+                    if (data.booked_slots >= data.total_slots) throw "Day is now full.";
+                    transaction.update(dayRef, { booked_slots: data.booked_slots + 1 });
+                });
+
+                // Save booking to Firestore
+                await addDoc(collection(db, "bookings"), bookingData);
+                
+                // Send email via Formspree
+                await submitToFormspree(bookingData);
+
+                showModal(`Success! Your cleaning is booked for ${selectedDate.toLocaleDateString()}. You will receive an email confirmation shortly.`);
+                resetBookingForm();
+
+            } catch (error) {
+                console.error("Booking failed: ", error);
+                showModal(typeof error === 'string' ? error : "There was an error. Please try again.");
+                // Note: We don't re-increment the slot here to prevent double-booking. Manual check might be needed if errors are frequent.
+            } finally {
+                bookNowBtn.disabled = false;
+                bookNowBtn.textContent = 'Book Now';
+            }
+        }
+
+        function resetBookingForm() {
+            addressEl.value = ''; emailEl.value = ''; phoneEl.value = '';
+            binCountEl.value = '1'; notesEl.value = '';
+            selectedDate = null;
+            document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
+            selectionDisplayEl.textContent = 'Please select a day from the calendar.';
+            validateBookingForm();
+        }
+        
+        async function submitToFormspree(data) {
+            const form = document.getElementById('formspree-form');
+            document.getElementById('formspree-email').value = data.email;
+            document.getElementById('formspree-address').value = data.address;
+            document.getElementById('formspree-phone').value = data.phone;
+            document.getElementById('formspree-binCount').value = data.binCount;
+            document.getElementById('formspree-selectedDate').value = new Date(data.selectedDate+'T00:00:00').toLocaleDateString();
+            document.getElementById('formspree-notes').value = data.notes;
+            document.getElementById('formspree-replyto').value = data.email;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Could not submit to Formspree', error);
+                // Don't show an error to the user as their booking is already saved.
+            }
+        }
+
+        // --- Payment Section Functions ---
+        function renderPaymentPlans() {
+            const binCount = paymentBinCountEl.value;
+            paymentPlansContainer.innerHTML = ''; // Clear previous
+
+            Object.keys(planDetails).forEach(planKey => {
+                const plan = planDetails[planKey];
+                const priceId = paymentPricing[planKey][binCount];
+                const price = plan.prices[binCount];
+                
+                const card = document.createElement('div');
+                card.className = 'plan-card bg-white p-8 rounded-xl shadow-lg text-center';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold mb-2">${plan.name}</h3>
+                    <p class="text-4xl font-bold text-blue-600 mb-4">${price}</p>
+                    <button data-price-id="${priceId}" data-mode="${plan.mode}" class="pay-button w-full bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
+                        Pay Now
+                    </button>
+                `;
+                paymentPlansContainer.appendChild(card);
+            });
+
+            document.querySelectorAll('.pay-button').forEach(button => {
+                button.addEventListener('click', handleStripeRedirect);
+            });
+        }
+
+        async function handleStripeRedirect(event) {
+            const button = event.currentTarget;
+            const priceId = button.dataset.priceId;
+            const mode = button.dataset.mode;
+            
+            if (!priceId || priceId.includes('...')) {
+                showModal('This payment plan is not configured yet. Please contact support.');
+                return;
+            }
+
+            const stripe = Stripe('pk_test_51PeyVjRsn5Tj4lG8n9h5b7e93051J2W2rD9cW3e4d5F6g7H8i9J0k1L2m3N4o5P6q7R8s9T'); // Replace with your key
+            const { error } = await stripe.redirectToCheckout({
+                lineItems: [{ price: priceId, quantity: 1 }],
+                mode: mode,
+                successUrl: `${window.location.origin}?payment=success`,
+                cancelUrl: `${window.location.origin}?payment=cancelled`,
+            });
+            if (error) {
+                showModal(error.message);
+            }
+        }
+
+        // --- Utility & Firebase Listener Functions ---
+        function listenForAvailability() {
+            const year = currentDate.getFullYear(); const month = currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = new Date(year, month, day).toISOString().split('T')[0];
+                initializeDayInDB(dateStr);
+                const dayRef = doc(db, "availability", dateStr);
+                onSnapshot(dayRef, (doc) => { if (doc.exists()) { availabilityData[dateStr] = doc.data(); updateDayUI(dateStr); } });
+            }
+        }
+        async function initializeDayInDB(dateStr) {
+            const dayRef = doc(db, "availability", dateStr); const daySnap = await getDoc(dayRef);
+            if (!daySnap.exists()) {
+                const dayOfWeek = new Date(dateStr).getUTCDay();
+                const total_slots = weeklyAvailability[dayOfWeek];
+                await setDoc(dayRef, { booked_slots: 0, total_slots });
+            }
+        }
+        function updateDayUI(dateStr) {
+            const dayEl = document.querySelector(`.calendar-day[data-date="${dateStr}"]`); if (!dayEl || dayEl.classList.contains('disabled')) return;
+            const { booked_slots = 0, total_slots = 0 } = availabilityData[dateStr] || {};
+            const availableSlots = total_slots - booked_slots;
+            const slotsEl = dayEl.querySelector('.slots-available');
+            if(slotsEl) {
+                 const today = new Date(); today.setHours(0,0,0,0); const dayDate = new Date(dateStr + 'T00:00:00');
+                 if (dayDate >= today && dayDate.getDay() !== 0) { slotsEl.textContent = availableSlots > 0 ? `${availableSlots} left` : 'Full'; } else { slotsEl.textContent = ''; }
+            }
+            dayEl.classList.remove('full'); if (total_slots > 0 && availableSlots <= 0) { dayEl.classList.add('full'); }
+        }
+        function showModal(message) { modalMessage.textContent = message; messageModal.classList.remove('hidden'); }
+        function hideModal() { messageModal.classList.add('hidden'); }
+        
+        // --- Event Listeners ---
+        [addressEl, emailEl, phoneEl, binCountEl].forEach(el => el.addEventListener('input', validateBookingForm));
+        prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+        nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+        bookNowBtn.addEventListener('click', handleBooking);
+        paymentBinCountEl.addEventListener('change', renderPaymentPlans);
+        modalCloseButton.addEventListener('click', hideModal);
+
+        // --- Initial Load ---
+        renderCalendar();
+        validateBookingForm();
+        renderPaymentPlans();
+    </script>
+    
     <script>
         // --- Mobile Menu Toggle ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
-        });
-
-        // --- Stripe Checkout Logic ---
-        // IMPORTANT: Replace with your actual Stripe Publishable Key.
-        // You can find this in your Stripe Dashboard under Developers > API Keys.
-        const stripe = Stripe('pk_test_51PeyVjRsn5Tj4lG8n9h5b7e93051J2W2rD9cW3e4d5F6g7H8i9J0k1L2m3N4o5P6q7R8s9T');
-        const checkoutButton = document.getElementById('checkout-button');
-        const errorMessage = document.getElementById('error-message');
-
-        checkoutButton.addEventListener('click', function () {
-            // This is a CLIENT-SIDE implementation.
-            // For a real-world application, you would create a Checkout Session on your server
-            // to keep price details secure.
-            // See Stripe Docs: https://stripe.com/docs/checkout/quickstart
-            
-            stripe.redirectToCheckout({
-                lineItems: [{
-                    // IMPORTANT: In a real app, use a Price ID from your Stripe Dashboard.
-                    // price: 'price_xxxxxxxxxxxx', 
-                    
-                    // For demonstration, we define the price ad-hoc.
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: 'One-Time Bin Cleaning',
-                            description: 'Power washing and sanitization for one residential bin.',
-                        },
-                        unit_amount: 4900, // Amount in cents ($49.00)
-                    },
-                    quantity: 1
-                }],
-                mode: 'payment',
-                // IMPORTANT: Replace these with your actual success and cancel URLs.
-                successUrl: window.location.origin + '?session_id={CHECKOUT_SESSION_ID}',
-                cancelUrl: window.location.origin,
-            }).then(function (result) {
-                if (result.error) {
-                    // If `redirectToCheckout` fails due to a browser or network
-                    // error, display the localized error message to your customer.
-                    errorMessage.textContent = result.error.message;
-                }
-            });
         });
 
         // --- Fade-in Animation on Scroll ---
@@ -219,14 +538,11 @@
                     entry.target.classList.add('is-visible');
                 }
             });
-        }, {
-            threshold: 0.1
-        });
+        }, { threshold: 0.1 });
 
         sections.forEach(section => {
             observer.observe(section);
         });
-
     </script>
 </body>
 </html>
