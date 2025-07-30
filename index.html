@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Bins - Power Washing Service</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Calendly Widget -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Simple animation for section fade-in */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600">Fresh Bins</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#services" class="text-gray-600 hover:text-blue-600 transition">Services</a>
+                <a href="#schedule" class="text-gray-600 hover:text-blue-600 transition">Schedule</a>
+                <a href="#payment" class="text-gray-600 hover:text-blue-600 transition">Pay Now</a>
+            </div>
+            <a href="#schedule" class="hidden md:block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Book Now</a>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#services" class="block py-2 text-gray-600 hover:text-blue-600">Services</a>
+            <a href="#schedule" class="block py-2 text-gray-600 hover:text-blue-600">Schedule</a>
+            <a href="#payment" class="block py-2 text-gray-600 hover:text-blue-600">Pay Now</a>
+            <a href="#schedule" class="block mt-2 bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition">Book Now</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-white">
+            <div class="container mx-auto px-6 py-20 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Say Goodbye to Stinky Bins</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We provide fast, reliable, and eco-friendly power washing for your residential trash and recycling bins.</p>
+                <a href="#schedule" class="mt-8 inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">Schedule Your Cleaning</a>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 fade-in-section">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Service Card 1 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">One-Time Clean</h3>
+                        <p class="text-gray-600">Perfect for a deep clean anytime you need it. We'll leave your bins spotless and sanitized.</p>
+                    </div>
+                    <!-- Service Card 2 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center border-4 border-blue-600 relative">
+                        <span class="absolute top-0 -mt-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Monthly Service</h3>
+                        <p class="text-gray-600">Keep your bins consistently fresh. We'll automatically clean them every month after trash day.</p>
+                    </div>
+                    <!-- Service Card 3 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Quarterly Plan</h3>
+                        <p class="text-gray-600">A great value for seasonal cleaning. We'll visit four times a year to keep things in check.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheduling Section -->
+        <section id="schedule" class="bg-white py-20 fade-in-section">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Book Your Service</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-xl mx-auto">Select a date and time that works for you. We'll confirm your appointment via email.</p>
+                
+                <!-- Calendly Inline Widget -->
+                <!-- 
+                    IMPORTANT: Replace the data-url below with your actual Calendly event link.
+                    You can get this from your Calendly account:
+                    1. Go to your Event Types.
+                    2. Click "Share" on the event you want to embed.
+                    3. Go to "Add to Website" -> "Inline Embed" and copy the URL from the generated code.
+                -->
+                <div class="calendly-inline-widget" data-url="https://calendly.com/d/cnp-zsc-d2g/one-off-meeting" style="min-width:320px;height:700px;"></div>
+                
+            </div>
+        </section>
+
+        <!-- Payment Section -->
+        <section id="payment" class="py-20 fade-in-section">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pay for Your Service</h2>
+                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Once your service is complete, you can pay securely online using our Stripe-powered payment system.</p>
+                <div class="max-w-sm mx-auto bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">One-Time Cleaning</h3>
+                    <p class="text-4xl font-bold text-blue-600 mb-4">$49</p>
+                    <p class="text-gray-500 mb-6">Secure payment for a single bin cleaning service. Thank you for your business!</p>
+                    <button id="checkout-button" class="w-full bg-green-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-transform transform hover:scale-105">Pay Now</button>
+                    <div id="error-message" class="text-red-500 mt-4"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-10">
+            <div class="text-center">
+                <a href="#" class="text-2xl font-bold text-white">Fresh Bins</a>
+                <p class="mt-4">Clean Bins, Happy Life.</p>
+                <div class="mt-6 flex justify-center space-x-6">
+                    <!-- Replace with your actual social media links -->
+                    <a href="#" class="hover:text-blue-400">Facebook</a>
+                    <a href="#" class="hover:text-blue-400">Twitter</a>
+                    <a href="#" class="hover:text-blue-400">Instagram</a>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
+                <p>&copy; 2025 Fresh Bins. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Stripe Checkout Logic ---
+        // IMPORTANT: Replace with your actual Stripe Publishable Key.
+        // You can find this in your Stripe Dashboard under Developers > API Keys.
+        const stripe = Stripe('pk_test_51PeyVjRsn5Tj4lG8n9h5b7e93051J2W2rD9cW3e4d5F6g7H8i9J0k1L2m3N4o5P6q7R8s9T');
+        const checkoutButton = document.getElementById('checkout-button');
+        const errorMessage = document.getElementById('error-message');
+
+        checkoutButton.addEventListener('click', function () {
+            // This is a CLIENT-SIDE implementation.
+            // For a real-world application, you would create a Checkout Session on your server
+            // to keep price details secure.
+            // See Stripe Docs: https://stripe.com/docs/checkout/quickstart
+            
+            stripe.redirectToCheckout({
+                lineItems: [{
+                    // IMPORTANT: In a real app, use a Price ID from your Stripe Dashboard.
+                    // price: 'price_xxxxxxxxxxxx', 
+                    
+                    // For demonstration, we define the price ad-hoc.
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: 'One-Time Bin Cleaning',
+                            description: 'Power washing and sanitization for one residential bin.',
+                        },
+                        unit_amount: 4900, // Amount in cents ($49.00)
+                    },
+                    quantity: 1
+                }],
+                mode: 'payment',
+                // IMPORTANT: Replace these with your actual success and cancel URLs.
+                successUrl: window.location.origin + '?session_id={CHECKOUT_SESSION_ID}',
+                cancelUrl: window.location.origin,
+            }).then(function (result) {
+                if (result.error) {
+                    // If `redirectToCheckout` fails due to a browser or network
+                    // error, display the localized error message to your customer.
+                    errorMessage.textContent = result.error.message;
+                }
+            });
+        });
+
+        // --- Fade-in Animation on Scroll ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>
