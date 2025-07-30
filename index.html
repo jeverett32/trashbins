@@ -71,7 +71,7 @@
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-600">Fresh Bins</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-2xl font-bold text-blue-600">Fresh Bins</a>
             <div class="hidden md:flex space-x-6">
                 <a href="#services" class="text-gray-600 hover:text-blue-600 transition">Services</a>
                 <a href="#schedule" class="text-gray-600 hover:text-blue-600 transition">Schedule</a>
@@ -95,8 +95,8 @@
         <!-- Hero Section -->
         <section class="bg-white">
             <div class="container mx-auto px-6 py-20 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Say Goodbye to Stinky Bins</h1>
-                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We provide fast, reliable, and eco-friendly power washing for your residential trash and recycling bins.</p>
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Say Goodbye to Stinky Butts</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We clean yo bins.</p>
                 <a href="#schedule" class="mt-8 inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">Schedule Your Cleaning</a>
             </div>
         </section>
@@ -171,7 +171,7 @@
                             </div>
                             <div>
                                 <label for="notes" class="block text-sm font-medium text-gray-700">Notes (optional)</label>
-                                <textarea id="notes" rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Come after 2:00 pm. Bins will be on the right side of the driveway."></textarea>
+                                <textarea id="notes" rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Bins will be on the right side of the driveway."></textarea>
                             </div>
                             <div id="selection-display" class="p-4 bg-gray-100 rounded-lg text-gray-600 text-center">
                                 Please select a day from the calendar.
@@ -209,7 +209,7 @@
     </main>
 
     <!-- Formspree hidden form -->
-    <form id="formspree-form" action=https://formspree.io/f/xjkooywl" method="POST" class="hidden">
+    <form id="formspree-form" action="https://formspree.io/f/xjkooywl" method="POST" class="hidden">
         <input type="email" name="email" id="formspree-email">
         <input type="text" name="address" id="formspree-address">
         <input type="tel" name="phone" id="formspree-phone">
@@ -251,15 +251,14 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        // IMPORTANT: Replace with your Firebase project's configuration.
         const firebaseConfig = {
-          apiKey: "AIzaSyBsHCie58L2nYYKtts6In5DS2F1a3_aDPM",
-          authDomain: "trash-bins.firebaseapp.com",
-          projectId: "trash-bins",
-          storageBucket: "trash-bins.firebasestorage.app",
-          messagingSenderId: "981537041970",
-          appId: "1:981537041970:web:83f0fda02b87e294be562b",
-          measurementId: "G-ZWX9BNHB6Y"
+            apiKey: "AIzaSyBsHCie58L2nYYKtts6In5DS2F1a3_aDPM",
+            authDomain: "trash-bins.firebaseapp.com",
+            projectId: "trash-bins",
+            storageBucket: "trash-bins.appspot.com",
+            messagingSenderId: "981537041970",
+            appId: "1:981537041970:web:83f0fda02b87e294be562b",
+            measurementId: "G-ZWX9BNHB6Y"
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -503,7 +502,10 @@
                  const today = new Date(); today.setHours(0,0,0,0); const dayDate = new Date(dateStr + 'T00:00:00');
                  if (dayDate >= today && dayDate.getDay() !== 0) { slotsEl.textContent = availableSlots > 0 ? `${availableSlots} left` : 'Full'; } else { slotsEl.textContent = ''; }
             }
-            dayEl.classList.remove('full'); if (total_slots > 0 && availableSlots <= 0) { dayEl.classList.add('full'); }
+            dayEl.classList.remove('full'); 
+            if ((total_slots > 0 && availableSlots <= 0) || (total_slots === 0 && new Date(dateStr+'T00:00:00') >= today)) { 
+                dayEl.classList.add('full'); 
+            }
         }
         function showModal(message) { modalMessage.textContent = message; messageModal.classList.remove('hidden'); }
         function hideModal() { messageModal.classList.add('hidden'); }
